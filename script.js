@@ -20,17 +20,22 @@ let circleTurn;
 let placedPieces = [];
 let xCount = 0;
 let oCount = 0;
-let xCountElement
+let xCountElement;
+let oCountElement;
 
 startGame();
 
 restartButton.addEventListener('click', startGame);
 
 function startGame() {
-  circleTurn = false;
-  placedPieces = [];
+  xCount = 0;
+  oCount = 0;
   xCountElement = document.getElementById('xCountElement');
   oCountElement = document.getElementById('oCountElement');
+  updateCount();
+
+  circleTurn = false;
+  placedPieces = [];
   cellElements.forEach(cell => {
     cell.classList.remove(X_CLASS);
     cell.classList.remove(CIRCLE_CLASS);
@@ -63,12 +68,8 @@ function handleClick(e) {
   }
 }
 
-function endGame(draw) {
-  if (draw) {
-    winningMessageTextElement.innerText = `Draw!`;
-  } else {
-    winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins!`;
-  }
+function endGame() {
+  winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins!`;
   winningMessageElement.classList.add('show');
 }
 
@@ -118,7 +119,7 @@ function updateCount(currentClass) {
   if (currentClass === X_CLASS) {
     xCount++;
     xCountElement.innerText = `X Count: ${xCount}`;
-  } else {
+  } else if (currentClass === CIRCLE_CLASS) {
     oCount++;
     oCountElement.innerText = `O Count: ${oCount}`;
   }
