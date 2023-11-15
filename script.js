@@ -10,6 +10,7 @@ const WINNING_COMBINATIONS = [
   [0, 4, 8],
   [2, 4, 6]
 ]
+const MAX_PIECES = 3
 const cellElements = document.querySelectorAll('[data-cell]')
 const board = document.getElementById('board')
 const winningMessageElement = document.getElementById('winningMessage')
@@ -36,11 +37,17 @@ function startGame() {
 function handleClick(e) {
   const cell = e.target
   const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
+
+  if (countPieces(currentClass) >= MAX_PIECES) {
+    removeOldestPiece(currentClass)
+  }
+
   placeMark(cell, currentClass)
+
   if (checkWin(currentClass)) {
     endGame(false)
-  } else if (isdraw()) {
-    endGame(true)
+    // } else if (isdraw()) {
+    //   endGame(true)
   } else {
     swapTurns()
     setBoardHoverClass()
@@ -57,12 +64,12 @@ function endGame(draw) {
   winningMessageElement.classList.add('show')
 }
 
-function isdraw() {
-  return [...cellElements].every(cell => {
-    return cell.classList.contains(X_CLASS) ||
-      cell.classList.contains(CIRCLE_CLASS)
-  })
-}
+// function isdraw() {
+//   return [...cellElements].every(cell => {
+//     return cell.classList.contains(X_CLASS) ||
+//       cell.classList.contains(CIRCLE_CLASS)
+//   })
+// }
 
 function placeMark(cell, currentClass) {
   cell.classList.add(currentClass)
@@ -88,4 +95,15 @@ function checkWin(currentClass) {
       return cellElements[index].classList.contains(currentClass)
     })
   })
+}
+
+function countPieces(currentClass) {
+  return [...cellElements].filter(cell => cell.classList.contains(currentClass)).length
+}
+
+function removeOldestPiece(currentClass) {
+  const pieces = [...cellElements].filter(cell => cell.classList.contains(currentClass));
+  if (pieces.length >= MAX_PIECES) {
+    pieces[0].classList.remove(currentClass);
+  }
 }
