@@ -1,5 +1,5 @@
-const X_CLASS = 'x'
-const CIRCLE_CLASS = 'circle'
+const X_CLASS = 'x';
+const CIRCLE_CLASS = 'circle';
 const WINNING_COMBINATIONS = [
   [0, 1, 2],
   [3, 4, 5],
@@ -9,28 +9,31 @@ const WINNING_COMBINATIONS = [
   [2, 5, 8],
   [0, 4, 8],
   [2, 4, 6]
-]
-const MAX_PIECES = 3
-const cellElements = document.querySelectorAll('[data-cell]')
-const board = document.getElementById('board')
-const winningMessageElement = document.getElementById('winningMessage')
-const restartButton = document.getElementById('restartButton')
-const winningMessageTextElement = document.querySelector('[data-winning-message-text]')
-let circleTurn
+];
+const MAX_PIECES = 3;
+const cellElements = document.querySelectorAll('[data-cell]');
+const board = document.getElementById('board');
+const winningMessageElement = document.getElementById('winningMessage');
+const restartButton = document.getElementById('restartButton');
+const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
+let circleTurn;
+let placedPieces = [];
 
-startGame()
+startGame();
 
-restartButton.addEventListener('click', startGame)
+restartButton.addEventListener('click', startGame);
 
 function startGame() {
   circleTurn = false;
+  placedPieces = [];
   cellElements.forEach(cell => {
     cell.classList.remove(X_CLASS);
     cell.classList.remove(CIRCLE_CLASS);
+    cell.removeEventListener('click', handleClick);
+    cell.addEventListener('click', handleClick);
   });
   setBoardHoverClass();
   winningMessageElement.classList.remove('show');
-  board.addEventListener('click', handleClick);
 }
 
 function handleClick(e) {
@@ -41,8 +44,9 @@ function handleClick(e) {
     removeOldestPiece(currentClass);
   }
 
-  if (cell.classList.contains('cell') && !cell.classList.contains(X_CLASS) && !cell.classList.contains(CIRCLE_CLASS)) {
+  if (!cell.classList.contains(X_CLASS) && !cell.classList.contains(CIRCLE_CLASS)) {
     placeMark(cell, currentClass);
+    placedPieces.push(cell);
 
     if (checkWin(currentClass)) {
       endGame(false);
@@ -53,59 +57,48 @@ function handleClick(e) {
   }
 }
 
-
 function endGame(draw) {
   if (draw) {
-    winningMessageTextElement.innerText = `Draw!`
+    winningMessageTextElement.innerText = `Draw!`;
   } else {
-    winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins!`
+    winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins!`;
   }
-  winningMessageElement.classList.add('show')
+  winningMessageElement.classList.add('show');
 }
 
-// function isdraw() {
-//   return [...cellElements].every(cell => {
-//     return cell.classList.contains(X_CLASS) ||
-//       cell.classList.contains(CIRCLE_CLASS)
-//   })
-// }
-
 function placeMark(cell, currentClass) {
-  cell.classList.add(currentClass)
+  cell.classList.add(currentClass);
 }
 
 function swapTurns() {
-  circleTurn = !circleTurn
+  circleTurn = !circleTurn;
 }
 
 function setBoardHoverClass() {
-  board.classList.remove(X_CLASS)
-  board.classList.remove(CIRCLE_CLASS)
+  board.classList.remove(X_CLASS);
+  board.classList.remove(CIRCLE_CLASS);
   if (circleTurn) {
-    board.classList.add(CIRCLE_CLASS)
+    board.classList.add(CIRCLE_CLASS);
   } else {
-    board.classList.add(X_CLASS)
+    board.classList.add(X_CLASS);
   }
 }
 
 function checkWin(currentClass) {
   return WINNING_COMBINATIONS.some(combination => {
     return combination.every(index => {
-      return cellElements[index].classList.contains(currentClass)
-    })
-  })
+      return cellElements[index].classList.contains(currentClass);
+    });
+  });
 }
 
 function countPieces(currentClass) {
-  return [...cellElements].filter(cell => cell.classList.contains(currentClass)).length
+  return [...cellElements].filter(cell => cell.classList.contains(currentClass)).length;
 }
 
 function removeOldestPiece(currentClass) {
-  const pieces = [...cellElements].filter(cell => cell.classList.contains(currentClass));
-  if (pieces.length >= MAX_PIECES) {
-    const cellToRemove = pieces[0];
+  if (placedPieces.length >= MAX_PIECES) {
+    const cellToRemove = placedPieces.shift();
     cellToRemove.classList.remove(currentClass);
-    cellToRemove.removeEventListener('click', handleClick);
   }
 }
-
