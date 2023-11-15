@@ -18,6 +18,9 @@ const restartButton = document.getElementById('restartButton');
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
 let circleTurn;
 let placedPieces = [];
+let xCount = 0;
+let oCount = 0;
+let xCountElement
 
 startGame();
 
@@ -26,6 +29,8 @@ restartButton.addEventListener('click', startGame);
 function startGame() {
   circleTurn = false;
   placedPieces = [];
+  xCountElement = document.getElementById('xCountElement');
+  oCountElement = document.getElementById('oCountElement');
   cellElements.forEach(cell => {
     cell.classList.remove(X_CLASS);
     cell.classList.remove(CIRCLE_CLASS);
@@ -51,6 +56,7 @@ function handleClick(e) {
     if (checkWin(currentClass)) {
       endGame(false);
     } else {
+      updateCount(currentClass);
       swapTurns();
       setBoardHoverClass();
     }
@@ -85,12 +91,17 @@ function setBoardHoverClass() {
 }
 
 function checkWin(currentClass) {
-  return WINNING_COMBINATIONS.some(combination => {
+  if (WINNING_COMBINATIONS.some(combination => {
     return combination.every(index => {
       return cellElements[index].classList.contains(currentClass);
     });
-  });
+  })) {
+    updateCount(currentClass);
+    return true;
+  }
+  return false;
 }
+
 
 function countPieces(currentClass) {
   return [...cellElements].filter(cell => cell.classList.contains(currentClass)).length;
@@ -100,5 +111,15 @@ function removeOldestPiece(currentClass) {
   if (placedPieces.length >= MAX_PIECES) {
     const cellToRemove = placedPieces.shift();
     cellToRemove.classList.remove(currentClass);
+  }
+}
+
+function updateCount(currentClass) {
+  if (currentClass === X_CLASS) {
+    xCount++;
+    xCountElement.innerText = `X Count: ${xCount}`;
+  } else {
+    oCount++;
+    oCountElement.innerText = `O Count: ${oCount}`;
   }
 }
