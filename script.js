@@ -23,34 +23,33 @@ startGame()
 restartButton.addEventListener('click', startGame)
 
 function startGame() {
-  circleTurn = false
+  circleTurn = false;
   cellElements.forEach(cell => {
-    cell.classList.remove(X_CLASS)
-    cell.classList.remove(CIRCLE_CLASS)
-    cell.removeEventListener('click', handleClick)
-    cell.addEventListener('click', handleClick, { once: true })
-  })
-  setBoardHoverClass()
-  winningMessageElement.classList.remove('show')
+    cell.classList.remove(X_CLASS);
+    cell.classList.remove(CIRCLE_CLASS);
+  });
+  setBoardHoverClass();
+  winningMessageElement.classList.remove('show');
+  board.addEventListener('click', handleClick);
 }
 
 function handleClick(e) {
-  const cell = e.target
+  const cell = e.target;
   const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
 
   if (countPieces(currentClass) >= MAX_PIECES) {
-    removeOldestPiece(currentClass)
+    removeOldestPiece(currentClass);
   }
 
-  placeMark(cell, currentClass)
+  if (cell.classList.contains('cell') && !cell.classList.contains(X_CLASS) && !cell.classList.contains(CIRCLE_CLASS)) {
+    placeMark(cell, currentClass);
 
-  if (checkWin(currentClass)) {
-    endGame(false)
-    // } else if (isdraw()) {
-    //   endGame(true)
-  } else {
-    swapTurns()
-    setBoardHoverClass()
+    if (checkWin(currentClass)) {
+      endGame(false);
+    } else {
+      swapTurns();
+      setBoardHoverClass();
+    }
   }
 }
 
@@ -104,6 +103,9 @@ function countPieces(currentClass) {
 function removeOldestPiece(currentClass) {
   const pieces = [...cellElements].filter(cell => cell.classList.contains(currentClass));
   if (pieces.length >= MAX_PIECES) {
-    pieces[0].classList.remove(currentClass);
+    const cellToRemove = pieces[0];
+    cellToRemove.classList.remove(currentClass);
+    cellToRemove.removeEventListener('click', handleClick);
   }
 }
+
