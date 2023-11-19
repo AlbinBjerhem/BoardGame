@@ -34,6 +34,7 @@ function startGame() {
   oCountElement = document.getElementById('oCountElement');
   updateCount();
 
+
   circleTurn = false;
   placedPieces = [];
   cellElements.forEach(cell => {

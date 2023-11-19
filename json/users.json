@@ -1,7 +1,10 @@
 {
   "users": [
     {
-      "username": "Albin"
+      "id": 1,
+      "username": "ALBIN",
+      "rating": 1000,
+      "matchHistory": []
     }
   ]
 }
