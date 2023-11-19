@@ -21,3 +21,8 @@ function loadScoresPage() {
       document.getElementById('app').innerHTML = data;
     });
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  loadRegistrationPage();
+});
