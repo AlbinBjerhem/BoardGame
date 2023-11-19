@@ -1,9 +1,15 @@
-function includeHeader() {
-  fetch('../HTML/Header.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('header-container').innerHTML = data;
-    })
+function navigateToRegistration() {
+  loadRegistrationPage();
 }
 
-includeHeader()
+function navigateToGame() {
+  loadGamePage();
+}
+
+function navigateToScores() {
+  loadScoresPage();
+}
+
+document.getElementById('registrationButton').addEventListener('click', navigateToRegistration);
+document.getElementById('gameButton').addEventListener('click', navigateToGame);
+document.getElementById('scoresButton').addEventListener('click', navigateToScores);

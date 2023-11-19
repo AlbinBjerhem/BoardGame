@@ -1,11 +1,23 @@
-function navigateToRegistration() {
-  window.location.href = '../HTML/UserRegistration.html';
+function loadRegistrationPage() {
+  fetch('../HTML/UserRegistration.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('app').innerHTML = data;
+    });
 }
 
-function navigateToGame() {
-  window.location.href = '../HTML/GamePage.html';
+function loadGamePage() {
+  fetch('../HTML/GamePage.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('app').innerHTML = data;
+    });
 }
 
-function navigateToScores() {
-  window.location.href = '../HTML/ScorePage.html';
+function loadScoresPage() {
+  fetch('../HTML/ScorePage.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('app').innerHTML = data;
+    });
 }
