@@ -5,6 +5,12 @@
       "username": "ALBIN",
       "rating": 1000,
       "matchHistory": []
+    },
+    {
+      "id": 2,
+      "username": "LOTTA",
+      "rating": 2000,
+      "matchHistory": []
     }
   ]
 }

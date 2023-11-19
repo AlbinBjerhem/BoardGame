@@ -56,9 +56,20 @@ async function fetchUsers() {
   }
 }
 
-function loadSelectedUser() {
+async function loadSelectedUser() {
   const userDropdown = document.getElementById('userDropdown');
   const selectedUsername = userDropdown.value;
 
-  console.log('Selected user:', selectedUsername);
+  try {
+    const response = await fetch(`http://localhost:3000/users/${selectedUsername}`);
+    const userData = await response.json();
+
+    document.getElementById('userDetails').innerText = `
+      Username: ${userData.username}
+      Rating: ${userData.rating}
+      Match History: ${userData.matchHistory.join(', ')}
+    `;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+  }
 }

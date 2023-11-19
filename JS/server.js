@@ -22,6 +22,30 @@ app.get('/users', async (req, res) => {
   }
 });
 
+app.get('/users/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const userData = await fs.readFile(userDataPath, 'utf-8');
+    const users = JSON.parse(userData);
+
+    const user = users.users.find(user => user.username === username);
+
+    if (user) {
+      res.json({
+        id: user.id,
+        username: user.username,
+        rating: user.rating,
+        matchHistory: user.matchHistory,
+      });
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.post('/register', async (req, res) => {
   const { username } = req.body;
 
