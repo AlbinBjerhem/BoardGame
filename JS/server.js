@@ -1,24 +1,26 @@
 const express = require('express');
 const fs = require('fs/promises');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
-
 app.use(express.json());
+
+const userDataPath = path.join(__dirname, '../json/users.json');
 
 app.post('/register', async (req, res) => {
   const { username } = req.body;
 
   try {
-    const userData = await fs.readFile('json/user.json', 'utf-8');
+    const userData = await fs.readFile(userDataPath, 'utf-8');
     const users = JSON.parse(userData);
 
     users.users.push({ username });
 
-    await fs.writeFile('json/user.json', JSON.stringify(users, null, 2));
+    await fs.writeFile(userDataPath, JSON.stringify(users, null, 2));
 
     res.status(200).send('User registered successfully');
   } catch (error) {
