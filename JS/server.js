@@ -82,3 +82,60 @@ app.post('/register', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+app.post('/updateRating', async (req, res) => {
+  const { username, change } = req.body;
+
+  try {
+    console.log('Update Rating endpoint reached');
+    const userData = await fs.readFile(userDataPath, 'utf-8');
+    const users = JSON.parse(userData);
+
+    const userIndex = users.users.findIndex(user => user.username === username);
+
+    if (userIndex !== -1) {
+      console.log(`Updating rating for ${username}`);
+      users.users[userIndex].rating += change;
+      await fs.writeFile(userDataPath, JSON.stringify(users, null, 2));
+      console.log('Rating updated successfully');
+      res.json({ success: true, message: 'Rating updated successfully' });
+    } else {
+      console.log(`User not found: ${username}`);
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error updating rating:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
+app.post('/updateMatchHistory', async (req, res) => {
+  const { winner, loser, rounds } = req.body;
+
+  try {
+    console.log('Update Match History endpoint reached');
+    const userData = await fs.readFile(userDataPath, 'utf-8');
+    const users = JSON.parse(userData);
+
+    const winnerIndex = users.users.findIndex(user => user.username === winner);
+    const loserIndex = users.users.findIndex(user => user.username === loser);
+
+    if (winnerIndex !== -1 && loserIndex !== -1) {
+      console.log(`Updating match history for ${winner} and ${loser}`);
+      const matchResult = { winner, loser, rounds };
+      users.users[winnerIndex].matchHistory.push(matchResult);
+      users.users[loserIndex].matchHistory.push(matchResult);
+
+      await fs.writeFile(userDataPath, JSON.stringify(users, null, 2));
+      console.log('Match history updated successfully');
+      res.json({ success: true, message: 'Match history updated successfully' });
+    } else {
+      console.log(`User not found. Winner: ${winner}, Loser: ${loser}`);
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error updating match history:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+

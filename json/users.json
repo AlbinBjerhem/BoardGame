@@ -3,13 +3,13 @@
     {
       "id": 1,
       "username": "ALBIN",
-      "rating": 1000,
+      "rating": 1040,
       "matchHistory": []
     },
     {
       "id": 2,
       "username": "LOTTA",
-      "rating": 2000,
+      "rating": 1956,
       "matchHistory": []
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "id": 4,
-      "username": "",
+      "username": "KALLE",
       "rating": 1000,
       "matchHistory": []
     }

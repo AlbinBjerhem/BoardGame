@@ -12,7 +12,12 @@
 </head>
 
 <body>
-  <div id="header-container"></div>
+
+  <div id="header-container">
+    <a href="../HTML/UserRegistration.html"><button>Registration</button></a>
+    <a href="../HTML/GamePage.html"><button>Game</button></a>
+    <a href="../HTML/ScorePage.html"><button>Scores</button></a>
+  </div>
 
   <div>
     <label for="playerDropdownForX">Select X player:</label>
@@ -20,6 +25,7 @@
     <label for="playerDropdownForO">Select O player:</label>
     <select id="oPlayerDropdown"></select>
   </div>
+  <button id="startGameButton">Start Game</button>
 
   <div class="board" id="board">
     <div class="cell" data-cell></div>
