@@ -3,24 +3,70 @@
     {
       "id": 1,
       "username": "ALBIN",
-      "rating": 1040,
-      "matchHistory": []
+      "rating": 1090,
+      "matchHistory": [
+        {
+          "winner": "ALBIN",
+          "loser": "LOTTA",
+          "rounds": 5
+        },
+        {
+          "winner": "ALBIN",
+          "loser": "LOTTA",
+          "rounds": 17
+        }
+      ]
     },
     {
       "id": 2,
       "username": "LOTTA",
-      "rating": 1956,
-      "matchHistory": []
+      "rating": 1856,
+      "matchHistory": [
+        {
+          "winner": "ALBIN",
+          "loser": "LOTTA",
+          "rounds": 5
+        },
+        {
+          "winner": "ALBIN",
+          "loser": "LOTTA",
+          "rounds": 17
+        }
+      ]
     },
     {
       "id": 3,
       "username": "NISSE",
-      "rating": 1000,
-      "matchHistory": []
+      "rating": 990,
+      "matchHistory": [
+        {
+          "winner": "KALLE",
+          "loser": "NISSE",
+          "rounds": 5
+        }
+      ]
     },
     {
       "id": 4,
       "username": "KALLE",
+      "rating": 980,
+      "matchHistory": [
+        {
+          "winner": "KALLE",
+          "loser": "NISSE",
+          "rounds": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "username": "NFA",
+      "rating": 1000,
+      "matchHistory": []
+    },
+    {
+      "id": 6,
+      "username": "FDSA",
       "rating": 1000,
       "matchHistory": []
     }

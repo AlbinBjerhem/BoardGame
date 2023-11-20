@@ -50,28 +50,20 @@ async function startGame(xPlayerId, oPlayerId) {
   startGameButton = document.getElementById('startGameButton');
   startGameButton.disabled = true;
 
-  // Use the passed player IDs if provided, otherwise fetch new players
   if (xPlayerId && oPlayerId) {
     selectedXPlayerId = xPlayerId;
     selectedOPlayerId = oPlayerId;
   } else {
     await fetchPlayers();
 
-    // Set the selected player IDs
     selectedXPlayerId = xPlayerDropdown.value;
     selectedOPlayerId = oPlayerDropdown.value;
   }
 
-  // Log the selected player IDs for debugging
-  console.log('Selected X Player ID:', selectedXPlayerId);
-  console.log('Selected O Player ID:', selectedOPlayerId);
-
-  // Set the dropdown values based on the selected IDs
   xPlayerDropdown.value = selectedXPlayerId;
   oPlayerDropdown.value = selectedOPlayerId;
 
   circleTurn = false;
-  console.log('Circle Turn:', circleTurn);
   placedPieces = [];
   cellElements.forEach(cell => {
     cell.classList.remove(X_CLASS);
@@ -178,15 +170,14 @@ function handleClick(e) {
       setBoardHoverClass();
     }
   }
-  console.log('Selected X Player ID:', selectedXPlayerId);
-  console.log('Selected O Player ID:', selectedOPlayerId);
+
 }
 
 function endGame() {
+
   const winnerId = circleTurn ? selectedOPlayerId : selectedXPlayerId;
   const loserId = circleTurn ? selectedXPlayerId : selectedOPlayerId;
 
-  // Get winner and loser names
   const winnerName = getPlayerName(winnerId);
   const loserName = getPlayerName(loserId);
 
@@ -194,12 +185,9 @@ function endGame() {
   winningMessageElement.classList.add('show');
   console.log(`${winnerName} Wins!`);
 
-  // Update rating and match history
-  updateRating(winnerName, 10); // Assuming you want to increase the winner's rating
-  updateRating(loserName, -10); // Assuming you want to decrease the loser's rating
-  updateMatchHistory(winnerName, loserName, rounds); // Replace 'rounds' with the actual number of rounds played
-  console.log('Circle Turn After Game Ends:', circleTurn);
-
+  updateRating(winnerName, 10);
+  updateRating(loserName, -10);
+  updateMatchHistory(winnerName, loserName, rounds);
 }
 
 function getPlayerName(playerId) {
@@ -254,13 +242,23 @@ function removeOldestPiece(currentClass) {
   }
 }
 
+// function updateCount(currentClass) {
+//   if (currentClass === X_CLASS) {
+//     xCount++;
+//     xCountElement.innerText = `X Count: ${xCount}`;
+//   } else if (currentClass === CIRCLE_CLASS) {
+//     oCount++;
+//     oCountElement.innerText = `O Count: ${oCount}`;
+//   }
+// }
+
+let rounds = 0;
+
 function updateCount(currentClass) {
-  if (currentClass === X_CLASS) {
-    xCount++;
-    xCountElement.innerText = `X Count: ${xCount}`;
-  } else if (currentClass === CIRCLE_CLASS) {
-    oCount++;
-    oCountElement.innerText = `O Count: ${oCount}`;
+  rounds++;
+
+  if (rounds % 2 === 0) {
+    console.log(`Round ${rounds} completed.`);
   }
 }
 
@@ -301,6 +299,11 @@ async function updateMatchHistory(winner, loser, rounds) {
     if (response.ok) {
       const result = await response.json();
       console.log(result);
+      if (result.success) {
+        console.log('Match history updated successfully');
+      } else {
+        console.error('Failed to update match history:', result.message);
+      }
     } else {
       console.error('Failed to update match history. Server returned:', response.status, response.statusText);
     }
@@ -308,3 +311,5 @@ async function updateMatchHistory(winner, loser, rounds) {
     console.error('Error updating match history:', error);
   }
 }
+
+

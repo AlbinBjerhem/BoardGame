@@ -114,6 +114,10 @@ app.post('/updateMatchHistory', async (req, res) => {
 
   try {
     console.log('Update Match History endpoint reached');
+    console.log('Winner:', winner);
+    console.log('Loser:', loser);
+    console.log('Rounds:', rounds);
+
     const userData = await fs.readFile(userDataPath, 'utf-8');
     const users = JSON.parse(userData);
 
@@ -123,10 +127,12 @@ app.post('/updateMatchHistory', async (req, res) => {
     if (winnerIndex !== -1 && loserIndex !== -1) {
       console.log(`Updating match history for ${winner} and ${loser}`);
       const matchResult = { winner, loser, rounds };
+
       users.users[winnerIndex].matchHistory.push(matchResult);
       users.users[loserIndex].matchHistory.push(matchResult);
 
       await fs.writeFile(userDataPath, JSON.stringify(users, null, 2));
+
       console.log('Match history updated successfully');
       res.json({ success: true, message: 'Match history updated successfully' });
     } else {
@@ -136,6 +142,20 @@ app.post('/updateMatchHistory', async (req, res) => {
   } catch (error) {
     console.error('Error updating match history:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
+app.get('/topUsers', async (req, res) => {
+  try {
+    const userData = await fs.readFile(userDataPath, 'utf-8');
+    const users = JSON.parse(userData).users;
+
+    const topUsers = users.sort((a, b) => b.rating - a.rating);
+
+    res.json({ users: topUsers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 });
 

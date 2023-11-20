@@ -67,9 +67,22 @@ async function loadSelectedUser() {
     document.getElementById('userDetails').innerText = `
       Username: ${userData.username}
       Rating: ${userData.rating}
-      Match History: ${userData.matchHistory.join(', ')}
+      Match History: ${formatMatchHistory(userData.matchHistory)}
     `;
   } catch (error) {
     console.error('Error fetching user details:', error);
   }
+}
+
+function formatMatchHistory(matchHistory) {
+  let formattedHistory = '';
+
+  matchHistory.forEach(match => {
+    formattedHistory += `Name: ${match.winner}\n`;
+    formattedHistory += `Winner: ${match.winner}\n`;
+    formattedHistory += `Loser: ${match.loser}\n`;
+    formattedHistory += `Rounds: ${match.rounds}\n\n`;
+  });
+
+  return formattedHistory.trim();
 }
