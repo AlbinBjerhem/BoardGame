@@ -27,13 +27,13 @@ startGame();
 
 restartButton.addEventListener('click', startGame);
 
-function startGame() {
+async function startGame() {
   xCount = 0;
   oCount = 0;
   xCountElement = document.getElementById('xCountElement');
   oCountElement = document.getElementById('oCountElement');
-  updateCount();
 
+  await fetchPlayers();
 
   circleTurn = false;
   placedPieces = [];
@@ -45,6 +45,34 @@ function startGame() {
   });
   setBoardHoverClass();
   winningMessageElement.classList.remove('show');
+}
+
+async function fetchPlayers() {
+  try {
+    const response = await fetch('http://localhost:3000/users');
+    const result = await response.json();
+
+    if (result && Array.isArray(result.users)) {
+      const users = result.users;
+
+      xPlayerDropdown.innerHTML = '';
+      oPlayerDropdown.innerHTML = '';
+
+      users.forEach(user => {
+        const option = document.createElement('option');
+        option.value = user.id;
+        option.text = user.username;
+
+        xPlayerDropdown.add(option.cloneNode(true));
+        oPlayerDropdown.add(option);
+      });
+    } else {
+      console.error('Invalid response format:', result);
+    }
+
+  } catch (error) {
+    console.error('Error fetching players:', error);
+  }
 }
 
 function handleClick(e) {
@@ -103,7 +131,6 @@ function checkWin(currentClass) {
   }
   return false;
 }
-
 
 function countPieces(currentClass) {
   return [...cellElements].filter(cell => cell.classList.contains(currentClass)).length;
