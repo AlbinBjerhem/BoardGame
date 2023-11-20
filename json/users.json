@@ -11,6 +11,18 @@
       "username": "LOTTA",
       "rating": 2000,
       "matchHistory": []
+    },
+    {
+      "id": 3,
+      "username": "NISSE",
+      "rating": 1000,
+      "matchHistory": []
+    },
+    {
+      "id": 4,
+      "username": "",
+      "rating": 1000,
+      "matchHistory": []
     }
   ]
 }
