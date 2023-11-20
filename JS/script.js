@@ -34,6 +34,8 @@ async function startGame() {
   oCountElement = document.getElementById('oCountElement');
 
   await fetchPlayers();
+  xPlayerDropdown.value = '';
+  oPlayerDropdown.value = '';
 
   circleTurn = false;
   placedPieces = [];
@@ -66,6 +68,11 @@ async function fetchPlayers() {
         xPlayerDropdown.add(option.cloneNode(true));
         oPlayerDropdown.add(option);
       });
+
+      xPlayerDropdown.addEventListener('change', () => {
+        const selectedXPlayerId = xPlayerDropdown.value;
+        disableOptionInODropdown(selectedXPlayerId);
+      });
     } else {
       console.error('Invalid response format:', result);
     }
@@ -73,6 +80,15 @@ async function fetchPlayers() {
   } catch (error) {
     console.error('Error fetching players:', error);
   }
+}
+
+function disableOptionInODropdown(selectedXPlayerId) {
+  Array.from(oPlayerDropdown.options).forEach(option => {
+    option.disabled = false;
+    if (option.value === selectedXPlayerId) {
+      option.disabled = true;
+    }
+  });
 }
 
 function handleClick(e) {
