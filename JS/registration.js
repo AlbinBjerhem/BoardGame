@@ -19,16 +19,17 @@ async function saveUserToServer(username) {
 
     if (response.ok) {
       console.log('User registered successfully');
-
+      alert(`${username} added successfully`);
       fetchUsers();
-
       document.getElementById('username').value = '';
     } else {
       const errorData = await response.json();
       console.error(`Failed to register user: ${errorData.error}`);
+      alert(`Error: ${errorData.error}`);
     }
   } catch (error) {
     console.error('Error:', error);
+    alert('An error occurred while registering the user maybe try another username');
   }
 }
 

@@ -242,16 +242,6 @@ function removeOldestPiece(currentClass) {
   }
 }
 
-// function updateCount(currentClass) {
-//   if (currentClass === X_CLASS) {
-//     xCount++;
-//     xCountElement.innerText = `X Count: ${xCount}`;
-//   } else if (currentClass === CIRCLE_CLASS) {
-//     oCount++;
-//     oCountElement.innerText = `O Count: ${oCount}`;
-//   }
-// }
-
 let rounds = 0;
 
 function updateCount(currentClass) {
